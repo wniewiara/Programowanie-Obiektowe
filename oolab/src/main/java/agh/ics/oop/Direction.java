@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-enum Direction{
+enum Direction {
     f,
     b,
     r,

@@ -58,12 +58,13 @@ public class World {
 
     public static void main(String[] args) {
 
-        MapDirection s = MapDirection.West;
-        System.out.println(s.toString());
-        System.out.println(s.next());
-        System.out.println(s.previous());
-        System.out.println(s.toUnitVector());
-
+        Animal animal = new Animal();
+        OptionsParser parser = new OptionsParser();
+        String[] strings = new String[]{"r","f","","dfg","123","forward","f"};
+        for(MoveDirection element : parser.parse(strings)){
+            animal.move(element);
+        };
+        System.out.println(animal);
     }
 
 }

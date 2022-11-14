@@ -1,4 +1,7 @@
 package agh.ics.oop;
+
+import java.util.Objects;
+
 /*
 w celu zaimplementowania mechanizmu, wykluczającego pojawienie się dwóch zwierząt w tym samym miejscu
 należy dodać metodę isOccupied(Vector2d vector) sprawdzająca czy w danym miejscu jest już jakieś zwierzę,
@@ -9,21 +12,62 @@ komunikat.
  */
 public class Animal {
     private MapDirection direction = MapDirection.North;
-    private Vector2d position = new Vector2d(2, 2);
+    private Vector2d position = new Vector2d(2,2);
+    private final IWorldMap map;
 
-    public Animal() {
+
+    public Animal(IWorldMap map){
+        this.map = map;
+        if (!this.map.isOccupied(this.position)){
+            this.map.place(this);
+        }
+        else{
+            System.out.println("pozycja na której chcesz utworzyć zwierze jest już zajęta");
+        }
+
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.map =map;
+        this.position = initialPosition;
+        if(!this.map.isOccupied(this.position)){
+            this.map.place(this);
+        }
+        else{
+            System.out.println("pozycja na której chcesz utworzyć zwierze jest już zajęta");
+        }
+    }
+
+    public Vector2d getPosition() {
+
+        return position;
     }
 
     public MapDirection getDirection() {
         return direction;
     }
 
-    public Vector2d getPosition() {
-        return position;
+    public IWorldMap getMap() {
+        return map;
     }
 
     public String toString() {
-        return "position: " + position + " direction:" + direction;
+
+        switch(this.direction){
+            case North -> {
+                return "^";
+            }
+            case West -> {
+                return "<";
+            }
+            case East -> {
+                return ">";
+            }
+            case South-> {
+                return "v";
+            }
+        }
+        return "There is something wrong with orientation of the animal";
     }
 
     public boolean isAt(Vector2d position) {
@@ -39,43 +83,53 @@ public class Animal {
             case Forward -> {
                 switch (this.direction) {
                     case North -> {
-                        if (this.position.y < 4)
-                            this.position = this.position.add(new Vector2d(0, 1));
+                        Vector2d nextPosition = this.position.add(MapDirection.North.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case South -> {
-                        if (this.position.y > 0)
-                            this.position = this.position.add(new Vector2d(0, -1));
+                        Vector2d nextPosition = this.position.add(MapDirection.South.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case West -> {
-                        if (this.position.x > 0)
-                            this.position = this.position.add(new Vector2d(-1, 0));
+                        Vector2d nextPosition = this.position.add(MapDirection.West.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case East -> {
-                        if (this.position.x < 4)
-                            this.position = this.position.add(new Vector2d(1, 0));
+                        Vector2d nextPosition = this.position.add(MapDirection.East.toUnitVector());
+                        if (map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                 }
             }
             case Backward -> {
                 switch (this.direction) {
                     case North -> {
-                        if (this.position.y > 0)
-                            this.position = this.position.subtract(new Vector2d(0, 1));
+                        Vector2d nextPosition = this.position.subtract(MapDirection.North.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case South -> {
-                        if (this.position.y < 4)
-                            this.position = this.position.subtract(new Vector2d(0, -1));
+                        Vector2d nextPosition = this.position.subtract(MapDirection.South.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case West -> {
-                        if (this.position.x < 4)
-                            this.position = this.position.subtract(new Vector2d(-1, 0));
+                        Vector2d nextPosition = this.position.subtract(MapDirection.West.toUnitVector());
+                        if (map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                     case East -> {
-                        if (this.position.x > 0)
-                            this.position = this.position.subtract(new Vector2d(1, 0));
+                        Vector2d nextPosition = this.position.subtract(MapDirection.East.toUnitVector());
+                        if (this.map.canMoveTo(nextPosition))
+                            this.position = nextPosition;
                     }
                 }
             }
         }
     }
+
+
 }

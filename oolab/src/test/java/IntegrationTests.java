@@ -3,9 +3,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class IntegrationTests {
+    IWorldMap map = new RectangularMap(5,5);
     @Test
     public void testNorth(){
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
         String[] strings = {"f","f","f","f"};
         for(MoveDirection element : parser.parse(strings)){
@@ -18,7 +19,7 @@ public class IntegrationTests {
 
     @Test
     public void testSouth(){
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
         String[] strings = {"back","r","b","r","right","r",  "backward", "sjf", "b"};
         for(MoveDirection element : parser.parse(strings)){
@@ -31,7 +32,7 @@ public class IntegrationTests {
 
     @Test
     public void testWest(){
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
         String[] strings = {"sr","left","f","r", "right", "backward","l", "left", "f","forward"};
         for(MoveDirection element : parser.parse(strings)){
@@ -44,7 +45,7 @@ public class IntegrationTests {
 
     @Test
     public void testEast(){
-        Animal animal = new Animal();
+        Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
         String[] strings = {"backward","r","f","l","f","f","f","right","f","f","left"};
         for(MoveDirection element : parser.parse(strings)){
@@ -54,4 +55,36 @@ public class IntegrationTests {
         Assertions.assertEquals(new Vector2d(4,4),animal.getPosition());
         Assertions.assertTrue(animal.isAt(new Vector2d(4,4)));
     }
+    // Integretrion test to lab4
+
+    @Test
+    public void mapTest(){
+        String[] input = new String[]{"f", "b", "r", "l", "f", "f","r","r", "f", "f", "f", "f", "f", "f"};
+        MoveDirection[] directions = new OptionsParser().parse(input);
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+
+        IWorldMap map2 = new RectangularMap(10, 5);
+        Animal animal1 = new Animal(map2,new Vector2d(2,2));
+        Animal animal2 = new Animal(map2,new Vector2d(3,4));
+        int i = 1;
+        for(MoveDirection direction : directions){
+            if(i%2 == 1)
+                animal1.move(direction);
+            else
+                animal2.move(direction);
+            i++;
+
+        }
+
+        Assertions.assertEquals( animal1.toString(), map.objectAt(new Vector2d(2,0)).toString());
+        Assertions.assertEquals(animal2.toString(), map.objectAt(new Vector2d(3,4)).toString());
+        Assertions.assertTrue(map.isOccupied(animal1.getPosition()));
+        Assertions.assertTrue(map.isOccupied(animal2.getPosition()));
+        Assertions.assertFalse(map.place(new Animal(map2,new Vector2d(2,3))));
+
+    }
+
 }

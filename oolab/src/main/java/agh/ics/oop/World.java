@@ -58,13 +58,21 @@ public class World {
 
     public static void main(String[] args) {
 
-        Animal animal = new Animal();
-        OptionsParser parser = new OptionsParser();
-        String[] strings = new String[]{"r","f","","dfg","123","forward","f"};
-        for(MoveDirection element : parser.parse(strings)){
-            animal.move(element);
-        };
-        System.out.println(animal);
+
+        MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f","r","r", "f", "f", "f", "f", "f", "f"});
+        IWorldMap map = new RectangularMap(10, 5);
+        System.out.println(map);
+
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+
+        System.out.println(map);
+        System.out.println(map.objectAt(new Vector2d(2,0)));
+        System.out.println(map.isOccupied(new Vector2d(2,0)));
+
+
+
     }
 
 }

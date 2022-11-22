@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -59,17 +60,23 @@ public class World {
     public static void main(String[] args) {
 
 
-        MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f","r","r", "f", "f", "f", "f", "f", "f"});
-        IWorldMap map = new RectangularMap(10, 5);
-        System.out.println(map);
+        MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f","r","r", "f", "f", "f", "f", "f", "f", "f", "f"});
+        IWorldMap map = new GrassField(10);
+        IWorldMap map2 = new RectangularMap(5,5);
 
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
 
+        IEngine engine2 = new SimulationEngine(directions, map2, positions);
+        engine2.run();
+
+
         System.out.println(map);
-        System.out.println(map.objectAt(new Vector2d(2,0)));
-        System.out.println(map.isOccupied(new Vector2d(2,0)));
+        System.out.println(map2);
+
+
+
 
 
 

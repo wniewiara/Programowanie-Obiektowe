@@ -18,7 +18,7 @@ public class Animal {
 
     public Animal(IWorldMap map){
         this.map = map;
-        if (!this.map.isOccupied(this.position)){
+        if (!(map.objectAt(this.position) instanceof Animal)){
             this.map.place(this);
         }
         else{
@@ -28,9 +28,9 @@ public class Animal {
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
-        this.map =map;
+        this.map = map;
         this.position = initialPosition;
-        if(!this.map.isOccupied(this.position)){
+        if(!(map.objectAt(this.position) instanceof Animal)){
             this.map.place(this);
         }
         else{

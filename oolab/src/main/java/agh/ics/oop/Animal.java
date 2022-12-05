@@ -1,6 +1,8 @@
 package agh.ics.oop;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /*
 w celu zaimplementowania mechanizmu, wykluczającego pojawienie się dwóch zwierząt w tym samym miejscu
@@ -14,10 +16,12 @@ public class Animal {
     private MapDirection direction = MapDirection.North;
     private Vector2d position = new Vector2d(2,2);
     private final IWorldMap map;
+    private Set<IPositionChangeObserver> observers = new HashSet<>();
 
 
     public Animal(IWorldMap map){
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
         if (!(map.objectAt(this.position) instanceof Animal)){
             this.map.place(this);
         }
@@ -29,6 +33,7 @@ public class Animal {
 
     public Animal(IWorldMap map, Vector2d initialPosition){
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
         this.position = initialPosition;
         if(!(map.objectAt(this.position) instanceof Animal)){
             this.map.place(this);
@@ -75,58 +80,39 @@ public class Animal {
         return this.position.equals(position);
     }
 
+    public void addObserver(IPositionChangeObserver observer){
+        observers.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer){
+        observers.remove(observer);
+    }
+
+    public void positionChange(Vector2d oldPosition, Vector2d newPosition){
+        observers.forEach(observer -> observer.positionChange(oldPosition, newPosition));
+    }
+
     public void move(MoveDirection direction) {
 
         switch (direction) {
             case Right -> this.direction = this.direction.next();
             case Left -> this.direction = this.direction.previous();
             case Forward -> {
-                switch (this.direction) {
-                    case North -> {
-                        Vector2d nextPosition = this.position.add(MapDirection.North.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case South -> {
-                        Vector2d nextPosition = this.position.add(MapDirection.South.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case West -> {
-                        Vector2d nextPosition = this.position.add(MapDirection.West.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case East -> {
-                        Vector2d nextPosition = this.position.add(MapDirection.East.toUnitVector());
-                        if (map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
+                Vector2d nextPosition = this.position.add(this.direction.toUnitVector());
+                if (this.map.canMoveTo(nextPosition)){
+                    positionChange(this.position,nextPosition);
+                    this.position = nextPosition;
                 }
+
+
             }
             case Backward -> {
-                switch (this.direction) {
-                    case North -> {
-                        Vector2d nextPosition = this.position.subtract(MapDirection.North.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case South -> {
-                        Vector2d nextPosition = this.position.subtract(MapDirection.South.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case West -> {
-                        Vector2d nextPosition = this.position.subtract(MapDirection.West.toUnitVector());
-                        if (map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
-                    case East -> {
-                        Vector2d nextPosition = this.position.subtract(MapDirection.East.toUnitVector());
-                        if (this.map.canMoveTo(nextPosition))
-                            this.position = nextPosition;
-                    }
+                Vector2d nextPosition = this.position.subtract(this.direction.toUnitVector());
+                if (this.map.canMoveTo(nextPosition)){
+                    positionChange(this.position,nextPosition);
+                    this.position = nextPosition;
                 }
+
             }
         }
     }

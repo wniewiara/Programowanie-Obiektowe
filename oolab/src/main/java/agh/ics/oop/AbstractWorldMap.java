@@ -1,12 +1,11 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public abstract class AbstractWorldMap implements IWorldMap {
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
-    protected List<Grass> grassTufts = new ArrayList<>();
-    protected List<Animal> animalsOnMap = new ArrayList<>();
+    protected Map<Vector2d, Grass> grassTufts = new HashMap<>();
+    protected Map<Vector2d, Animal> animalsOnMap = new HashMap<>();
     protected int width;
     protected int height;
 
@@ -15,7 +14,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean canMoveTo(Vector2d position) {
 
-        return !isOccupied(position) && position.x <= this.width && position.x >= 0 && position.y <= this.width && position.y >= 0;
+        return !isOccupied(position) && position.x <= this.width && position.x >= 0 && position.y <= this.height && position.y >= 0;
     }
 
     @Override
@@ -24,7 +23,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
             return false;
         } else {
 
-            animalsOnMap.add(animal);
+            animalsOnMap.put(animal.getPosition(),animal);
             return true;
         }
     }
@@ -32,34 +31,24 @@ public abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean isOccupied(Vector2d position) {
 
-        for (Animal animal : animalsOnMap) {
-            if (position.equals(animal.getPosition())) {
-                return true;
-            }
+
+        if (animalsOnMap.get(position) != null) {
+            return true;
         }
 
-        for(Grass grass : grassTufts){
-            if(position.equals(grass.getPosition())){
-                return true;
-            }
-        }
-        return false;
+        return grassTufts.get(position) != null;
     }
 
     @Override
     public Object objectAt(Vector2d position) {
 
-        for(Animal animal : animalsOnMap){
-            if( animal.isAt(position))
-                return animal;
-        }
+        Animal animal = animalsOnMap.get(position);
+        Grass grass = grassTufts.get(position);
 
-        for(Grass grass : grassTufts){
-            if(position.equals(grass.getPosition()))
-                return grass;
-        }
+        if(animal != null)
+            return animal;
 
-        return null;
+        return grass;
     }
 
     @Override
@@ -69,4 +58,11 @@ public abstract class AbstractWorldMap implements IWorldMap {
         return new MapVisualizer(this).draw(new Vector2d(minX,minY), new Vector2d(maxX , maxY ));
     }
 
+    @Override
+    public void positionChange(Vector2d oldPosition, Vector2d newPosition) {
+
+        Animal animal = animalsOnMap.get(oldPosition);
+        animalsOnMap.remove(oldPosition);
+        animalsOnMap.put(newPosition, animal);
+    }
 }

@@ -14,6 +14,7 @@ public class MapTests {
     Animal animal1 = new Animal(map, v1);
     Animal animal2 = new Animal(grassField, v1);
     Animal animal3 = new Animal(map, v2);
+    Vector2d grassPosition = grassField2.getGrassTufts().entrySet().iterator().next().getValue().getPosition();
 
     @Test
     public void canMoveToTest(){
@@ -45,14 +46,13 @@ public class MapTests {
         Assertions.assertNull(map.objectAt(v4));
         Assertions.assertNull(grassField.objectAt(v4));
 
-        Vector2d grassPosition = grassField2.getGrassTufts().get(0).getPosition();
 
-        Assertions.assertEquals(grassField2.objectAt(grassPosition), grassField2.getGrassTufts().get(0));
 
-        Vector2d grassPosition2 = grassField2.getGrassTufts().get(1).getPosition();
-        Animal animal4 = new Animal(grassField2, grassPosition2);
+        Assertions.assertEquals(grassField2.objectAt(grassPosition), grassField2.getGrassTufts().get(grassPosition));
 
-        Assertions.assertEquals(grassField2.objectAt(grassPosition2), animal4);
+        Animal animal4 = new Animal(grassField2, grassPosition);
+
+        Assertions.assertEquals(grassField2.objectAt(grassPosition), animal4);
 
     }
 
@@ -61,7 +61,7 @@ public class MapTests {
 
         Assertions.assertTrue(map.isOccupied(v1));
         Assertions.assertTrue(grassField.isOccupied(v1));
-        Assertions.assertTrue(grassField.isOccupied(grassField.getGrassTufts().get(0).getPosition()));
+        Assertions.assertTrue(grassField2.isOccupied(grassPosition));
         Assertions.assertFalse(map.isOccupied(v3));
         Assertions.assertFalse(grassField.isOccupied(v4));
 

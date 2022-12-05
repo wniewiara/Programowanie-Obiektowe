@@ -15,7 +15,7 @@ public class GrassField extends AbstractWorldMap{
 
     public void grassGenerator(){
 
-        while( grassTufts.size()<this.grassPlaces){
+        while( grassTufts.size() < this.grassPlaces){
             Random random = new Random();
             int x = random.nextInt((int)(Math.sqrt(this.grassPlaces*10) + 1));
             int y = random.nextInt((int)(Math.sqrt(this.grassPlaces*10) + 1));
@@ -23,13 +23,13 @@ public class GrassField extends AbstractWorldMap{
             Vector2d vector2d = new Vector2d(x,y);
             if(!(isOccupied(vector2d))){
                 Grass grass = new Grass(vector2d);
-                grassTufts.add(grass);
+                grassTufts.put(vector2d, grass);
             }
         }
 
     }
 
-    public List<Grass> getGrassTufts() {
+    public Map<Vector2d,Grass> getGrassTufts() {
         return grassTufts;
     }
 
@@ -39,9 +39,10 @@ public class GrassField extends AbstractWorldMap{
         int[] boundaries = new int[4];
 
         int maxX, minX, maxY, minY;
-        maxY = minY = grassTufts.get(0).getPosition().y;
-        maxX = minX = grassTufts.get(0).getPosition().x;
-        for(Grass grass : grassTufts){
+
+        maxY = minY = maxX = minX = 0;
+
+        for(Grass grass : grassTufts.values()){
             if(grass.getPosition().x > maxX)
                 maxX = grass.getPosition().x;
             if(grass.getPosition().y > maxY)
@@ -52,7 +53,7 @@ public class GrassField extends AbstractWorldMap{
                 minY = grass.getPosition().y;
         }
 
-        for(Animal animal : animalsOnMap){
+        for(Animal animal : animalsOnMap.values()){
             if(animal.getPosition().x > maxX)
                 maxX = animal.getPosition().x;
             if(animal.getPosition().y > maxY)

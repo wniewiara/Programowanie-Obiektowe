@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,9 +63,10 @@ public class World {
 
 
         MoveDirection[] directions = new OptionsParser().parse(new String[]{"f", "b", "r", "l", "f", "f","r","r", "f", "f", "f", "f", "f", "f", "f", "f"});
-        IWorldMap map = new GrassField(10);
-        IWorldMap map2 = new RectangularMap(5,5);
-
+        IWorldMap map = new GrassField(4);
+        IWorldMap map2 = new RectangularMap(4,4);
+        System.out.println(map);
+        System.out.println(map2);
         Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
@@ -74,10 +77,6 @@ public class World {
 
         System.out.println(map);
         System.out.println(map2);
-
-
-
-
 
 
     }

@@ -8,13 +8,13 @@ public class IntegrationTests {
     public void testNorth(){
         Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
-        String[] strings = {"f","f","f","f"};
+        String[] strings = {"f","f","f","f","f","f"};
         for(MoveDirection element : parser.parse(strings)){
             animal.move(element);
         };
         Assertions.assertEquals(MapDirection.North, animal.getDirection());
-        Assertions.assertEquals(new Vector2d(2,4),animal.getPosition());
-        Assertions.assertTrue(animal.isAt(new Vector2d(2,4)));
+        Assertions.assertEquals(new Vector2d(2,5),animal.getPosition());
+        Assertions.assertTrue(animal.isAt(new Vector2d(2,5)));
     }
 
     @Test
@@ -52,8 +52,8 @@ public class IntegrationTests {
             animal.move(element);
         };
         Assertions.assertEquals(MapDirection.North, animal.getDirection());
-        Assertions.assertEquals(new Vector2d(4,4),animal.getPosition());
-        Assertions.assertTrue(animal.isAt(new Vector2d(4,4)));
+        Assertions.assertEquals(new Vector2d(5,4),animal.getPosition());
+        Assertions.assertTrue(animal.isAt(new Vector2d(5,4)));
     }
     // Integretrion test to lab4
 
@@ -80,7 +80,7 @@ public class IntegrationTests {
         }
 
         Assertions.assertEquals( animal1.toString(), map.objectAt(new Vector2d(2,0)).toString());
-        Assertions.assertEquals(animal2.toString(), map.objectAt(new Vector2d(3,4)).toString());
+        Assertions.assertEquals(animal2.toString(), map.objectAt(new Vector2d(3,5)).toString());
         Assertions.assertTrue(map.isOccupied(animal1.getPosition()));
         Assertions.assertTrue(map.isOccupied(animal2.getPosition()));
         Assertions.assertFalse(map.place(new Animal(map2,new Vector2d(2,3))));

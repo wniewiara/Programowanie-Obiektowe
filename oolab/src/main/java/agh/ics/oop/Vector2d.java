@@ -1,10 +1,13 @@
 package agh.ics.oop;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Vector2d {
     public final int x;
     public final int y;
+    public Map<Integer,Integer> map = new HashMap<>();
 
     public Vector2d(int x, int y) {
         this.x = x;
@@ -61,6 +64,7 @@ public class Vector2d {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+
+        return Objects.hash(this.x, this.y);
     }
 }

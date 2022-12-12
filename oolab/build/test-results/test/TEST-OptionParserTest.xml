@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="OptionParserTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-12T02:36:49" hostname="DESKTOP-L8AV1O7" time="0.042">
+  <properties/>
+  <testcase name="optionparserTest()" classname="OptionParserTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

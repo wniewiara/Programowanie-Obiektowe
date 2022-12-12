@@ -9,7 +9,6 @@ public class GrassField extends AbstractWorldMap{
 
     public GrassField(int grassPlaces){
         this.grassPlaces = grassPlaces;
-
         grassGenerator();
     }
 
@@ -24,6 +23,7 @@ public class GrassField extends AbstractWorldMap{
             if(!(isOccupied(vector2d))){
                 Grass grass = new Grass(vector2d);
                 grassTufts.put(vector2d, grass);
+                mapBoundary.addPosition(vector2d);
             }
         }
 
@@ -37,36 +37,10 @@ public class GrassField extends AbstractWorldMap{
     public int[] findBoundaries() {
 
         int[] boundaries = new int[4];
-
-        int maxX, minX, maxY, minY;
-
-        maxY = minY = maxX = minX = 0;
-
-        for(Grass grass : grassTufts.values()){
-            if(grass.getPosition().x > maxX)
-                maxX = grass.getPosition().x;
-            if(grass.getPosition().y > maxY)
-                maxY = grass.getPosition().y;
-            if(grass.getPosition().x < minX)
-                minX = grass.getPosition().x;
-            if(grass.getPosition().y < minY)
-                minY = grass.getPosition().y;
-        }
-
-        for(Animal animal : animalsOnMap.values()){
-            if(animal.getPosition().x > maxX)
-                maxX = animal.getPosition().x;
-            if(animal.getPosition().y > maxY)
-                maxY = animal.getPosition().y;
-            if(animal.getPosition().x < minX)
-                minX = animal.getPosition().x;
-            if(animal.getPosition().y < minY)
-                minY = animal.getPosition().y;
-        }
-        boundaries[0] = minX;
-        boundaries[1] = minY;
-        boundaries[2] = maxX;
-        boundaries[3] = maxY;
+        boundaries[0] = mapBoundary.getLowerBound().x;
+        boundaries[1] = mapBoundary.getLowerBound().y;
+        boundaries[2] = mapBoundary.getUpperBound().x;
+        boundaries[3] = mapBoundary.getUpperBound().y;
 
         return boundaries;
     }
@@ -75,5 +49,15 @@ public class GrassField extends AbstractWorldMap{
     public boolean canMoveTo(Vector2d position) {
         return !(objectAt(position) instanceof Animal);
     }
+
+//    @Override
+//    public boolean place(Animal animal){
+//        mapBoundary.addPosition(animal.getPosition());
+//        super.place(animal);
+//        return true;
+//    }
+//
+//    @Override
+//    publi
 
 }

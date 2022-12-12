@@ -29,12 +29,18 @@ public class MapTests {
     @Test
     public void placeTest(){
 
-        Assertions.assertFalse(grassField.place(animal1));
-        Assertions.assertFalse(grassField.place(animal2));
-        Assertions.assertFalse(grassField.place(animal3));
-        Assertions.assertFalse(map.place(animal1));
-        Assertions.assertFalse(map.place(animal2));
-        Assertions.assertFalse(map.place(animal3));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->grassField.place(animal1));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->grassField.place(animal2));
+        Assertions.assertTrue(grassField.place(animal3));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->map.place(animal1));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->map.place(animal2));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->map.place(animal3));
+
     }
 
     @Test

@@ -22,12 +22,7 @@ public class Animal {
     public Animal(IWorldMap map){
         this.map = map;
         addObserver((IPositionChangeObserver) map);
-        if (!(map.objectAt(this.position) instanceof Animal)){
-            this.map.place(this);
-        }
-        else{
-            System.out.println("pozycja na której chcesz utworzyć zwierze jest już zajęta");
-        }
+        this.map.place(this);
 
     }
 
@@ -35,12 +30,8 @@ public class Animal {
         this.map = map;
         addObserver((IPositionChangeObserver) map);
         this.position = initialPosition;
-        if(!(map.objectAt(this.position) instanceof Animal)){
-            this.map.place(this);
-        }
-        else{
-            System.out.println("pozycja na której chcesz utworzyć zwierze jest już zajęta");
-        }
+        this.map.place(this);
+
     }
 
     public Vector2d getPosition() {

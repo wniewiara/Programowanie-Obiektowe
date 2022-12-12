@@ -11,7 +11,7 @@ public class IntegrationTests {
         String[] strings = {"f","f","f","f","f","f"};
         for(MoveDirection element : parser.parse(strings)){
             animal.move(element);
-        };
+        }
         Assertions.assertEquals(MapDirection.North, animal.getDirection());
         Assertions.assertEquals(new Vector2d(2,5),animal.getPosition());
         Assertions.assertTrue(animal.isAt(new Vector2d(2,5)));
@@ -21,10 +21,10 @@ public class IntegrationTests {
     public void testSouth(){
         Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
-        String[] strings = {"back","r","b","r","right","r",  "backward", "sjf", "b"};
+        String[] strings = {"r","b","r","right","r",  "backward", "b"};
         for(MoveDirection element : parser.parse(strings)){
             animal.move(element);
-        };
+        }
         Assertions.assertEquals(MapDirection.North, animal.getDirection());
         Assertions.assertEquals(new Vector2d(1,0),animal.getPosition());
         Assertions.assertTrue(animal.isAt(new Vector2d(1,0)));
@@ -34,10 +34,10 @@ public class IntegrationTests {
     public void testWest(){
         Animal animal = new Animal(map);
         OptionsParser parser = new OptionsParser();
-        String[] strings = {"sr","left","f","r", "right", "backward","l", "left", "f","forward"};
+        String[] strings = {"left","f","r", "right", "backward","l", "left", "f","forward"};
         for(MoveDirection element : parser.parse(strings)){
             animal.move(element);
-        };
+        }
         Assertions.assertEquals(MapDirection.West, animal.getDirection());
         Assertions.assertEquals(new Vector2d(0,2),animal.getPosition());
         Assertions.assertTrue(animal.isAt(new Vector2d(0,2)));
@@ -50,7 +50,7 @@ public class IntegrationTests {
         String[] strings = {"backward","r","f","l","f","f","f","right","f","f","left"};
         for(MoveDirection element : parser.parse(strings)){
             animal.move(element);
-        };
+        }
         Assertions.assertEquals(MapDirection.North, animal.getDirection());
         Assertions.assertEquals(new Vector2d(5,4),animal.getPosition());
         Assertions.assertTrue(animal.isAt(new Vector2d(5,4)));
@@ -81,9 +81,13 @@ public class IntegrationTests {
 
         Assertions.assertEquals( animal1.toString(), map.objectAt(new Vector2d(2,0)).toString());
         Assertions.assertEquals(animal2.toString(), map.objectAt(new Vector2d(3,5)).toString());
+        System.out.println(animal1.getPosition());
+        System.out.println(animal2.getPosition());
+        System.out.println(map);
         Assertions.assertTrue(map.isOccupied(animal1.getPosition()));
         Assertions.assertTrue(map.isOccupied(animal2.getPosition()));
-        Assertions.assertFalse(map.place(new Animal(map2,new Vector2d(2,3))));
+        Assertions.assertThrows(IllegalArgumentException.class,
+                ()->map.place(new Animal(map2,new Vector2d(2,0))));
 
     }
 

@@ -2,9 +2,9 @@ package agh.ics.oop;
 
 public class OptionsParser  {
 
-    public MoveDirection[] parse(String[] array) {
-        int size = 0, iterator = -1;
-
+    public MoveDirection[]  parse(String[] array) throws IllegalArgumentException{
+       int size = 0, iterator = -1;
+/*
         for (String element : array) {
             if (element.equals("b") || element.equals("backward") ||
                     element.equals("f") || element.equals("forward") ||
@@ -13,13 +13,20 @@ public class OptionsParser  {
                 size++;
 
             }
-        }
-        MoveDirection[] directions = new MoveDirection[size];
+        }*/
+
+        MoveDirection[] directions = new MoveDirection[array.length];
+
         for (String element : array) {
+            if(!(element.equals("b") || element.equals("backward") ||
+                element.equals("f") || element.equals("forward") ||
+                element.equals("r") || element.equals("right")  ||
+                element.equals("l") || element.equals("left"))){
+                throw new IllegalArgumentException(element+" is not legal move specification");
+            }
             if (element.equals("b") || element.equals("backward")) {
                 iterator++;
                 directions[iterator] = MoveDirection.Backward;
-
             }
             if (element.equals("f") || element.equals("forward")) {
                 iterator++;
@@ -34,6 +41,7 @@ public class OptionsParser  {
                 directions[iterator] = MoveDirection.Left;
             }
         }
+
         return directions;
     }
 }

@@ -18,7 +18,7 @@ public class SimulationEngine implements IEngine {
             Animal animal = new Animal(this.map, vector);
             animals[i] = animal;
             i++;
-            this.map.place(animal);
+          //  this.map.place(animal);
         }
     }
 
